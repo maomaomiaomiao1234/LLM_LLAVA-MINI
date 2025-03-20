@@ -10,34 +10,29 @@ def call_llava_api(image_path, prompt, controller_address="http://localhost:1000
     image_data = encode_image(image_path)
 
     data = {
-        "model": "llava-v1.5-7b",  # 模型的名称（根据你的设置更改）
+        #"model": "llava-v1.5-7b",  # 模型的名称（根据你的设置更改）
+        "model": "llava-mini",
         "images": [image_data],
         "prompt": prompt,
         "temperature": 0.7,  # 可选参数
         "top_p": 0.9,        # 可选参数
         "max_tokens": 512,   # 可选参数
-        #"stop":"</s>",
+        "stop":"</s>"
     }
-    #data = {
-    #    "model": 'llava-v1.5-7b',
-    #    "prompt": "A chat between a curious human and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the human's questions. USER: hello ASSISTANT:",
-    #    "temperature": 0.2,
-    #    "top_p": 0.7,
-    #    "max_new_tokens": 512,
-    #    "images": image_data,
-    #    "stop": "</s>",
-    #}
-
     response = requests.post(f"{controller_address}/worker_generate_stream", json=data)
 
     print(f"Status Code: {response.status_code}")
     print(f"Response Text: {response.text}")
+    
+    #for line in response.iter_lines():
+    #    if line:
+    #        print(line.decode("utf-8"))
 
-    try:
-        result = response.json()
-        print(result["text"])
-    except requests.exceptions.JSONDecodeError as e:
-        print(f"JSONDecodeError: {e}")
+    #try:
+    #    result = response.json()
+    #    print(result["text"])
+    #except requests.exceptions.JSONDecodeError as e:
+    #    print(f"JSONDecodeError: {e}")
 
     #if response.status_code == 200:
     #    result = response.json()

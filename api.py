@@ -4,9 +4,14 @@ import random
 import json
 import requests
 from requests.exceptions import RequestException
+import base64
 from functools import partial
 
+def encode_image(image_path):
+    with open(image_path, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode('utf-8')
 # 请求头部，仿照 WebUI 的请求头
+
 headers = {
     "User-Agent": "LLaVA Client",  # 模拟 WebUI 中的 User-Agent
     "Accept-Encoding": "gzip, deflate",
@@ -127,15 +132,15 @@ async def main():
     if not worker_address:
         print(f"Unable to find worker address for model: {model_name}")
         return
-
+    image_path = "/tmp/gradio/ed525b52861f0970f23499d799a8e324447eef1435a3f5526dec61c2fb42a39c/extreme_ironing.jpg"
+    image_data = encode_image(image_path)
     params = {
         "model": model_name,
-        "prompt": "A chat between a curious human and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the human's questions. USER: hello ASSISTANT:",
+        "prompt": "A chat between a curious human and an artificial intelligence assistant. The assistant gives helpful, detailed, and polite answers to the human's questions. USER: hello ASSISTANT: <image>",
         "temperature": 0.2,
         "top_p": 0.7,
         "max_new_tokens": 512,
-        "stop": "</s>",
-        "images": "List of 0 images: []"
+        "images": [image_data],
     }
 
     # 初始化队列管理器
