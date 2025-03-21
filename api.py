@@ -141,6 +141,7 @@ async def main():
         "top_p": 0.7,
         "max_new_tokens": 512,
         "images": [image_data],
+        "stop":"<\s>"
     }
 
     # 初始化队列管理器
