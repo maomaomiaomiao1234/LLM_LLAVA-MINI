@@ -6,8 +6,7 @@
         "conversations": [
             {
                 "from": "human",
-                "value": "<image>
-Who is in the picture?"
+                "value": "<image>Who is in the picture?"
             },
             {
                 "from": "gpt",
